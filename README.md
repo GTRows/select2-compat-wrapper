@@ -42,6 +42,9 @@ Your existing 3.3.x code continues to work as-is.
 | `$el.select2("opened")` | `$el.select2("isOpen")` |
 | `$el.select2("isFocused")` | `$el.select2("hasFocus")` |
 | `$el.select2("container")` | Returns `instance.$container` |
+| `$el.select2("onSortStart")` | No-op with console warning |
+| `$el.select2("onSortEnd")` | No-op with console warning |
+| `$el.select2("positionDropdown")` | No-op with console warning |
 
 Methods that work natively in both versions (`open`, `close`, `destroy`, `focus`, `enable`, `val`, `data` getter) are passed through without modification.
 
@@ -61,8 +64,19 @@ Methods that work natively in both versions (`open`, `close`, `destroy`, `focus`
 | `sortResults` | `sorter` |
 | `createSearchChoice` | `createTag` |
 | `selectOnBlur` | `selectOnClose` |
+| `separator` | `valueSeparator` |
 | `tags` (array/function) | `tags: true` + `data` |
 | `matcher(term, text)` | Wrapped to match new `(params, data)` signature |
+| `id` (function/string) | Stored internally for data remapping |
+
+### Removed options (logged and dropped)
+
+These 3.3.x options have no equivalent in 4.x. The wrapper removes them from the config and logs a warning so they do not cause errors:
+
+- `openOnEnter`
+- `blurOnChange`
+- `loadMorePadding`
+- `formatResultCssClass`
 
 ### AJAX translation
 
@@ -74,25 +88,82 @@ Methods that work natively in both versions (`open`, `close`, `destroy`, `focus`
 
 Return value `{ more: true }` is converted to `{ pagination: { more: true } }`.
 
+### Event bridge
+
+The wrapper automatically re-emits 4.x events under their 3.3.x names so existing event listeners keep working:
+
+| 4.x Event | Re-emitted as (3.3.x) |
+|---|---|
+| `select2:open` | `select2-open` |
+| `select2:opening` | `select2-opening` |
+| `select2:close` | `select2-close` |
+| `select2:closing` | `select2-closing` |
+| `select2:select` | `select2-selecting` + `select2-selected` |
+| `select2:unselect` | `select2-removing` + `select2-removed` |
+| `select2:clear` | `select2-cleared` |
+| `select2:clearing` | `select2-clearing` |
+
+Event data is mapped: `e.params.data` (4.x) is exposed as `e.choice` and `e.val` (3.3.x style). Calling `preventDefault()` on the legacy event propagates back to the 4.x event.
+
 ### Unknown methods
 
 Any method call that does not exist in 4.0.13 and has no mapping will **not crash**. Instead, it logs a warning to the console and returns the jQuery object for chaining.
 
 ## What the wrapper does NOT handle
 
-- **Event namespace migration**: If your code listens for `select2-` prefixed events (e.g., `select2-selecting`, `select2-removed`), you need to update those to `select2:` prefix (e.g., `select2:select`, `select2:unselect`) manually, or extend the wrapper.
 - **Hidden input elements**: Select2 3.x commonly used `<input type="hidden">`. Version 4.x has a compat module for this but it is deprecated. Consider migrating to `<select>` elements over time.
 - **CSS class changes**: 4.x uses BEM-style class names (`select2-selection--single` instead of `select2-choice`). If you have custom CSS targeting old class names, update those separately.
 - **`formatResult` full signature**: The wrapper passes `null` for the `container` parameter and an empty object for `query`. If your formatter depends on those, adjust accordingly.
+
+## Running the tests
+
+The `test/` directory contains an automated test suite that runs the same scenarios against both versions:
+
+```
+test/
+  index.html              <- Side-by-side comparison (open this)
+  test-v3.html            <- Select2 3.3.0 original
+  test-v4-wrapped.html    <- Select2 4.0.13 + compat wrapper
+  shared-tests.js         <- Shared test scenarios
+  lib/v3/                 <- Select2 3.3.0 files
+  lib/v4/                 <- Select2 4.0.13 + wrapper files
+```
+
+Open `test/index.html` in a browser. Both panels run identical test scenarios:
+
+1. **Basic init** - `.select2()` with no options
+2. **Placeholder + allowClear** - Common init pattern
+3. **open / close** - Method calls and `opened` return value
+4. **disable / enable** - Toggling disabled state
+5. **data setter (single)** - `select2("data", {id, text})`
+6. **data setter (new option)** - Creates missing `<option>` dynamically
+7. **data getter** - `select2("data")` read-only
+8. **destroy** - Clean teardown
+9. **container** - Access internal container element
+10. **Unknown method** - Verifies no crash
+11. **maximumSelectionSize** - Renamed option
+12. **formatNoMatches** - Language function migration
+13. **formatSelection** - Template function migration
+14. **formatResult** - Template function migration
+15. **matcher** - Old 3-arg signature wrapping
+16. **AJAX config** - `quietMillis`, `data(term, page)`, `results(data, page)`
+17. **tags (array)** - Array-style tags init
+18. **select2-open event** - Event bridge fires on open
+19. **select2-close event** - Event bridge fires on close
+20. **Removed options** - `openOnEnter`, `blurOnChange`, `loadMorePadding` do not crash
+21. **No-op methods** - `onSortStart`, `onSortEnd`, `positionDropdown` do not crash
+22. **selectOnBlur** - Renamed option
+23. **createSearchChoice** - Renamed option
+
+Each test shows PASS or FAIL. The left panel (3.3.0) confirms the test is valid against the original API. The right panel (4.0.13 + wrapper) confirms the wrapper handles it correctly.
 
 ## Migration checklist
 
 1. Replace `select2.js` (3.3.x) with `select2.full.js` (4.0.13)
 2. Replace `select2.css` (3.3.x) with the 4.0.13 stylesheet
 3. Add `select2-compat-wrapper.js` after `select2.full.js`
-4. Search your codebase for `select2-` event listeners and update to `select2:` prefix
-5. Test all pages that use Select2
-6. Check any custom CSS targeting Select2 class names
+4. Test all pages that use Select2
+5. Check any custom CSS targeting Select2 class names
 
 ## Full migration analysis
 

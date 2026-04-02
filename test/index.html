@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select2 Compat Wrapper - Test Comparison</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #0d1117; font-family: Consolas, monospace; }
+        .header {
+            background: #161b22; color: #c9d1d9; padding: 12px 20px;
+            font-size: 15px; border-bottom: 1px solid #30363d;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header span { color: #8b949e; font-size: 12px; }
+        .split { display: flex; height: calc(100vh - 42px); }
+        .split iframe { flex: 1; border: none; border-right: 2px solid #30363d; }
+        .split iframe:last-child { border-right: none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>Select2 Compat Wrapper - Side-by-Side Test Comparison</div>
+        <span>Left: 3.3.0 Original &nbsp; | &nbsp; Right: 4.0.13 + Wrapper</span>
+    </div>
+    <div class="split">
+        <iframe src="test-v3.html"></iframe>
+        <iframe src="test-v4-wrapped.html"></iframe>
+    </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select2 4.0.13 + Compat Wrapper - Test Suite</title>
+    <link rel="stylesheet" href="lib/v4/select2.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: Consolas, monospace; margin: 0; padding: 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #c9d1d9; font-size: 18px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .version-badge { background: #5cb85c; color: #fff; padding: 3px 10px; border-radius: 3px; font-size: 13px; }
+        #results { margin-top: 20px; }
+        .result-row { padding: 6px 12px; margin: 2px 0; border-radius: 3px; font-size: 13px; display: flex; justify-content: space-between; }
+        .result-row.pass { background: #0d3320; color: #3fb950; }
+        .result-row.fail { background: #3d1117; color: #f85149; }
+        .result-row .detail { color: #8b949e; font-size: 12px; }
+        .summary { margin-top: 20px; padding: 12px; border-radius: 5px; font-size: 14px; font-weight: bold; }
+        .summary.all-pass { background: #0d3320; color: #3fb950; }
+        .summary.has-fail { background: #3d1117; color: #f85149; }
+        #test-dom { position: absolute; left: -9999px; top: -9999px; }
+    </style>
+</head>
+<body>
+    <h1><span class="version-badge">Select2 4.0.13 + Wrapper</span> Test Suite - 3.3.x API Compat</h1>
+    <div id="results"></div>
+    <div id="test-dom"></div>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="lib/v4/select2.full.js"></script>
+    <script src="lib/v4/select2-compat-wrapper.js"></script>
+    <script src="shared-tests.js"></script>
+    <script>
+        (function () {
+            var $results = $("#results");
+            var passed = 0, failed = 0;
+
+            function log(name, pass, detail) {
+                var cls = pass ? "pass" : "fail";
+                var icon = pass ? "PASS" : "FAIL";
+                if (pass) passed++; else failed++;
+                $results.append(
+                    '<div class="result-row ' + cls + '">' +
+                    '<span>[' + icon + '] ' + name + '</span>' +
+                    '<span class="detail">' + (detail || '') + '</span>' +
+                    '</div>'
+                );
+            }
+
+            Select2CompatTests.run($("#test-dom"), false, log);
+
+            var total = passed + failed;
+            var cls = failed === 0 ? "all-pass" : "has-fail";
+            $results.append(
+                '<div class="summary ' + cls + '">' +
+                total + ' tests: ' + passed + ' passed, ' + failed + ' failed' +
+                '</div>'
+            );
+        })();
+    </script>
+</body>
+</html>

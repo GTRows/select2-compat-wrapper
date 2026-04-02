@@ -115,7 +115,21 @@ Any method call that does not exist in 4.0.13 and has no mapping will **not cras
 - **CSS class changes**: 4.x uses BEM-style class names (`select2-selection--single` instead of `select2-choice`). If you have custom CSS targeting old class names, update those separately.
 - **`formatResult` full signature**: The wrapper passes `null` for the `container` parameter and an empty object for `query`. If your formatter depends on those, adjust accordingly.
 
-## Running the tests
+## Test results
+
+**4.0.13 + Wrapper: 23/23 passed**
+
+![4.0.13 + Wrapper test results](screenshots/test-v4-wrapped.png)
+
+**Side-by-side comparison** (left: 3.3.0 original, right: 4.0.13 + wrapper):
+
+![Side-by-side comparison](screenshots/test-side-by-side.png)
+
+The 3.3.0 side shows some failures due to its own limitations (e.g., `ajax` not allowed on `<select>`, unknown methods throwing instead of logging, events not firing in headless context). The 4.0.13 + wrapper side passes all 23 tests.
+
+**Live demo**: [https://gtrows.github.io/select2-compat-wrapper/test/](https://gtrows.github.io/select2-compat-wrapper/test/)
+
+## Running the tests locally
 
 The `test/` directory contains an automated test suite that runs the same scenarios against both versions:
 

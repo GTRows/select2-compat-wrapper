@@ -122,8 +122,82 @@ Any method call that does not exist in 4.0.13 and has no mapping will **not cras
 ## What the wrapper does NOT handle
 
 - **Hidden input elements**: Select2 3.x commonly used `<input type="hidden">`. Version 4.x has a compat module for this but it is deprecated. Consider migrating to `<select>` elements over time.
-- **CSS class changes**: 4.x uses BEM-style class names (`select2-selection--single` instead of `select2-choice`). If you have custom CSS targeting old class names, update those separately.
+- **CSS class changes**: 4.x uses BEM-style class names. See the full mapping table below. If you have custom CSS targeting old class names, update those separately.
 - **`formatResult` full signature**: The wrapper passes `null` for the `container` parameter and an empty object for `query`. If your formatter depends on those, adjust accordingly.
+
+## CSS class migration reference
+
+### Container
+
+| 3.3.x Class | 4.x Class | Notes |
+|---|---|---|
+| `.select2-container` | `.select2-container` | Same |
+| `.select2-container-active` | `.select2-container--focus` | Renamed |
+| `.select2-container-disabled` | `.select2-container--disabled` | Renamed |
+| `.select2-dropdown-open` | `.select2-container--open` | Renamed |
+| `.select2-container-multi` | `.select2-container` (with `--multiple` on selection) | Removed, use selection class |
+| `.select2-drop-above` | `.select2-container--above` | Renamed |
+| `.select2-offscreen` | `.select2-hidden-accessible` | Renamed |
+
+### Single select
+
+| 3.3.x Class | 4.x Class | Notes |
+|---|---|---|
+| `.select2-choice` | `.select2-selection--single` | Renamed |
+| `.select2-choice span` | `.select2-selection__rendered` | Renamed |
+| `.select2-choice abbr` | `.select2-selection__clear` | Renamed |
+| `.select2-choice div` | `.select2-selection__arrow` | Renamed |
+| `.select2-choice div b` | `.select2-selection__arrow b` | Same structure |
+| `.select2-default` | `.select2-selection__placeholder` | Renamed |
+
+### Multiple select
+
+| 3.3.x Class | 4.x Class | Notes |
+|---|---|---|
+| `.select2-choices` | `.select2-selection--multiple` | Renamed |
+| `.select2-search-choice` | `.select2-selection__choice` | Renamed |
+| `.select2-search-choice-close` | `.select2-selection__choice__remove` | Renamed |
+| `.select2-search-choice-focus` | `.select2-selection__choice` (no focus class) | Removed |
+| `.select2-search-field` | `.select2-search--inline` | Renamed |
+| `.select2-search-field input` | `.select2-search__field` | Renamed |
+| `.select2-locked` | N/A | Removed |
+
+### Dropdown
+
+| 3.3.x Class | 4.x Class | Notes |
+|---|---|---|
+| `.select2-drop` | `.select2-dropdown` | Renamed |
+| `.select2-drop-above` | `.select2-dropdown--above` | Renamed |
+| `.select2-drop-mask` | `.select2-close-mask` | Renamed |
+| `.select2-search` | `.select2-search--dropdown` | Renamed |
+| `.select2-search input` | `.select2-search__field` | Renamed |
+| `.select2-search-hidden` | N/A | Removed, handled internally |
+| `.select2-active` (on search input) | N/A | Removed, no loading indicator class |
+
+### Results
+
+| 3.3.x Class | 4.x Class | Notes |
+|---|---|---|
+| `.select2-results` | `.select2-results` | Same |
+| `.select2-results li` | `.select2-results__option` | Renamed |
+| `.select2-result-label` | `.select2-results__option` (text content) | Merged |
+| `.select2-result-sub` | `.select2-results__option` (nested) | Nested via ARIA `role=group` |
+| `.select2-highlighted` | `.select2-results__option--highlighted` | Renamed |
+| `.select2-disabled` | `.select2-results__option[aria-disabled=true]` | Now attribute selector |
+| `.select2-selected` | `.select2-results__option[aria-selected=true]` | Now attribute selector |
+| `.select2-no-results` | `.select2-results__message` | Renamed |
+| `.select2-searching` | `.select2-results__message` | Merged with no-results |
+| `.select2-selection-limit` | N/A | Removed, handled by adapter |
+| `.select2-match` | N/A | Removed, no match highlighting |
+| `.select2-result-with-children` | `.select2-results__option[role=group]` | Now attribute selector |
+| `.select2-more-results` | N/A | Removed, handled by InfiniteScroll adapter |
+
+### Unchanged classes
+
+These work the same in both versions:
+
+- `.select2-container`
+- `.select2-results`
 
 ## Test results
 

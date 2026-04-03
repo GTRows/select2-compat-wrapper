@@ -15,9 +15,6 @@
     "use strict";
 
     if (!$.fn.select2) {
-        if (window.console) {
-            console.error("[select2-compat] select2 is not loaded. Load select2.full.js before this wrapper.");
-        }
         return;
     }
 

@@ -7,6 +7,9 @@
  *
  * Covers: methods, init options, events, AJAX config, tags, matcher.
  * Unknown methods are logged as warnings and do not crash.
+ *
+ * Logging can be controlled via:
+ *   $.fn.select2.compat.debug = true;   // enable warnings (default: false)
  */
 (function ($) {
     "use strict";
@@ -19,6 +22,7 @@
     }
 
     var _originalSelect2 = $.fn.select2;
+    var _debug = false;
 
     // -------------------------------------------------------
     // Event bridge: re-emit 4.x "select2:*" events as 3.x "select2-*"
@@ -207,6 +211,10 @@
     // Preserve defaults and amd references from the original
     $.fn.select2.defaults = _originalSelect2.defaults;
     $.fn.select2.amd = _originalSelect2.amd;
+    $.fn.select2.compat = {
+        get debug() { return _debug; },
+        set debug(val) { _debug = !!val; }
+    };
 
     // -------------------------------------------------------
     // Option translation for init calls
@@ -470,7 +478,7 @@
     }
 
     function logWarn(key, message) {
-        if (window.console && console.warn) {
+        if (_debug && window.console && console.warn) {
             console.warn("[select2-compat] \"" + key + "\": " + message);
         }
     }

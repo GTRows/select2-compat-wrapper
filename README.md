@@ -31,6 +31,16 @@ Load the wrapper immediately after Select2 4.0.13:
 
 Your existing 3.3.x code continues to work as-is.
 
+### Debug logging
+
+Wrapper warnings are **off by default**. To enable them during development:
+
+```js
+$.fn.select2.compat.debug = true;
+```
+
+When enabled, the wrapper logs translation details and unsupported options/methods to `console.warn`. Keep it off in production.
+
 ## What the wrapper handles
 
 ### Method translation

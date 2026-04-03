@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Select2 Compat Wrapper - Demo (4.x CSS)</title>
-    <link rel="stylesheet" href="lib/v4/select2.css">
+    <title>Select2 Compat Wrapper - Demo (3.x CSS - Broken)</title>
+    <link rel="stylesheet" href="lib/v3/select2.css">
     <style>
         * { box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background: #0d1117; color: #c9d1d9; }
@@ -14,6 +14,7 @@
         .badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600; margin-left: 8px; vertical-align: middle; }
         .switch-link { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 6px 14px; border-radius: 4px; font-size: 12px; text-decoration: none; font-family: Consolas, monospace; white-space: nowrap; }
         .switch-link:hover { border-color: #8b949e; }
+        .warning-bar { background: #3d1d00; padding: 10px 24px; border-bottom: 1px solid #6e3a00; font-size: 13px; color: #f0883e; }
         .content { max-width: 900px; margin: 0 auto; padding: 24px; }
         .card { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 20px; margin-bottom: 16px; }
         .card h2 { margin: 0 0 4px; font-size: 15px; font-weight: 600; color: #e6edf3; }
@@ -26,15 +27,23 @@
         .card .output { margin-top: 8px; font-size: 12px; color: #f0883e; font-family: Consolas, monospace; min-height: 20px; }
         .select2-container { width: 100% !important; }
 
-        /* Dark theme for 4.x classes */
-        .select2-container .select2-selection--single,
-        .select2-container .select2-selection--multiple { background: #0d1117; border-color: #30363d; color: #c9d1d9; min-height: 34px; }
-        .select2-container .select2-selection--single .select2-selection__rendered { color: #c9d1d9; line-height: 34px; }
-        .select2-container .select2-selection--multiple .select2-selection__choice { background: #21262d; border-color: #30363d; color: #c9d1d9; }
-        .select2-dropdown { background: #161b22; border-color: #30363d; }
-        .select2-results__option { color: #c9d1d9; }
-        .select2-results__option--highlighted { background: #1f6feb !important; color: #fff !important; }
-        .select2-search__field { background: #0d1117 !important; color: #c9d1d9 !important; border-color: #30363d !important; }
+        /* Dark theme for 3.x classes -- but 4.x JS outputs 4.x HTML, so most of these won't match */
+        .select2-container .select2-choice { background: #0d1117; border-color: #30363d; color: #c9d1d9; background-image: none; filter: none; }
+        .select2-container .select2-choice span { color: #c9d1d9; }
+        .select2-container .select2-choice div { background: #21262d; border-left-color: #30363d; background-image: none; filter: none; }
+        .select2-drop { background: #161b22; border-color: #30363d; color: #c9d1d9; }
+        .select2-results .select2-highlighted { background: #1f6feb; color: #fff; }
+        .select2-results .select2-result-label { color: #c9d1d9; }
+        .select2-search input { background: #0d1117; border-color: #30363d; color: #c9d1d9; background-image: none; }
+        .select2-container-multi .select2-choices { background: #0d1117; border-color: #30363d; background-image: none; }
+        .select2-container-multi .select2-choices .select2-search-choice { background: #21262d; border-color: #30363d; color: #c9d1d9; background-image: none; filter: none; }
+        .select2-container-multi .select2-choices .select2-search-field input { color: #c9d1d9; }
+        .select2-container-active .select2-choice,
+        .select2-container-active .select2-choices { border-color: #1f6feb; }
+        .select2-dropdown-open .select2-choice { background: #161b22; background-image: none; filter: none; }
+        .select2-default { color: #8b949e !important; }
+        .select2-results .select2-no-results,
+        .select2-results .select2-searching { background: #0d1117; color: #8b949e; }
 
         .split-row { display: flex; gap: 16px; }
         .split-row > .card { flex: 1; }
@@ -47,10 +56,14 @@
 
 <div class="header">
     <div class="header-left">
-        <h1>Select2 Compat Wrapper <span class="badge" style="background:#238636">4.x CSS + 4.x JS + Wrapper</span></h1>
-        <p>All components below use 3.3.x-style API calls running on Select2 4.0.13 via the compat wrapper.</p>
+        <h1>Select2 Compat Wrapper <span class="badge" style="background:#d29922;color:#000">3.x CSS + 4.x JS + Wrapper</span></h1>
+        <p>Same components, but loaded with 3.3.x CSS. Styling is broken because 4.x outputs different HTML class names.</p>
     </div>
-    <a class="switch-link" href="demo-v3css.html">View with 3.x CSS (broken styling) &rarr;</a>
+    <a class="switch-link" href="demo.html">&larr; View with 4.x CSS (correct styling)</a>
+</div>
+
+<div class="warning-bar">
+    This page uses Select2 3.x CSS with 4.x JS + wrapper. The components work functionally, but styling is broken because 4.x generates BEM class names (.select2-selection--single) while 3.x CSS targets flat class names (.select2-choice). You must update your CSS when upgrading.
 </div>
 
 <div class="content">

@@ -231,7 +231,9 @@ Components include:
 - Event bridge (3.3.x-style event listeners on 4.x engine)
 - Destroy and reinitialize
 
-**Live interactive demo**: [https://gtrows.github.io/select2-compat-wrapper/test/demo.html](https://gtrows.github.io/select2-compat-wrapper/test/demo.html)
+**Live demo (4.x CSS)**: [https://gtrows.github.io/select2-compat-wrapper/test/demo.html](https://gtrows.github.io/select2-compat-wrapper/test/demo.html)
+
+**Live demo (3.x CSS - broken styling)**: [https://gtrows.github.io/select2-compat-wrapper/test/demo-v3css.html](https://gtrows.github.io/select2-compat-wrapper/test/demo-v3css.html) -- shows what happens when you upgrade JS but keep old CSS.
 
 ## Running the tests locally
 

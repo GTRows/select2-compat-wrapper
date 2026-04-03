@@ -129,6 +129,26 @@ The 3.3.0 side shows some failures due to its own limitations (e.g., `ajax` not 
 
 **Live demo**: [https://gtrows.github.io/select2-compat-wrapper/test/](https://gtrows.github.io/select2-compat-wrapper/test/)
 
+## Interactive demo
+
+The demo page shows real working Select2 components using 3.3.x API calls on top of 4.0.13 + wrapper:
+
+![Interactive demo](screenshots/demo.png)
+
+Components include:
+- Basic select with placeholder/allowClear
+- Data setter (`select2("data", obj)`) with dynamic option creation
+- Container access (`select2("container")`)
+- Multiple select with `maximumSelectionSize`
+- Custom formatting via `formatResult` / `formatSelection`
+- Old-style `matcher(term, text, option)`
+- Language functions (`formatNoMatches`, `formatSearching`)
+- AJAX with 3.3.x config (`quietMillis`, `data(term, page)`, `results(data, page)`)
+- Event bridge (3.3.x-style event listeners on 4.x engine)
+- Destroy and reinitialize
+
+**Live interactive demo**: [https://gtrows.github.io/select2-compat-wrapper/test/demo.html](https://gtrows.github.io/select2-compat-wrapper/test/demo.html)
+
 ## Running the tests locally
 
 The `test/` directory contains an automated test suite that runs the same scenarios against both versions:

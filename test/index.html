@@ -12,6 +12,8 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .header span { color: #8b949e; font-size: 12px; }
+        .header a { color: #58a6ff; font-size: 12px; text-decoration: none; margin-left: 16px; }
+        .header a:hover { text-decoration: underline; }
         .split { display: flex; height: calc(100vh - 42px); }
         .split iframe { flex: 1; border: none; border-right: 2px solid #30363d; }
         .split iframe:last-child { border-right: none; }
@@ -20,7 +22,7 @@
 <body>
     <div class="header">
         <div>Select2 Compat Wrapper - Side-by-Side Test Comparison</div>
-        <span>Left: 3.3.0 Original &nbsp; | &nbsp; Right: 4.0.13 + Wrapper</span>
+        <span>Left: 3.3.0 Original &nbsp; | &nbsp; Right: 4.0.13 + Wrapper <a href="demo.html">Interactive Demo</a></span>
     </div>
     <div class="split">
         <iframe src="test-v3.html"></iframe>

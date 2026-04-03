@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select2 Compat Wrapper - Live Demo</title>
+    <link rel="stylesheet" href="lib/v4/select2.css">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; background: #0d1117; color: #c9d1d9; }
+        .header { background: #161b22; padding: 16px 24px; border-bottom: 1px solid #30363d; }
+        .header h1 { margin: 0; font-size: 18px; font-weight: 600; }
+        .header p { margin: 4px 0 0; font-size: 13px; color: #8b949e; }
+        .badge { display: inline-block; background: #238636; color: #fff; padding: 2px 8px; border-radius: 3px; font-size: 12px; font-weight: 600; margin-left: 8px; vertical-align: middle; }
+        .content { max-width: 900px; margin: 0 auto; padding: 24px; }
+        .card { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 20px; margin-bottom: 16px; }
+        .card h2 { margin: 0 0 4px; font-size: 15px; font-weight: 600; color: #e6edf3; }
+        .card .desc { font-size: 12px; color: #8b949e; margin-bottom: 14px; }
+        .card .code { font-size: 12px; color: #7ee787; background: #0d1117; padding: 10px 12px; border-radius: 4px; margin-bottom: 12px; font-family: Consolas, monospace; white-space: pre; overflow-x: auto; }
+        .card select, .card input { width: 100%; }
+        .card .actions { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .card .actions button { background: #21262d; color: #c9d1d9; border: 1px solid #30363d; padding: 5px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; font-family: Consolas, monospace; }
+        .card .actions button:hover { background: #30363d; border-color: #8b949e; }
+        .card .output { margin-top: 8px; font-size: 12px; color: #f0883e; font-family: Consolas, monospace; min-height: 20px; }
+        .select2-container { width: 100% !important; }
+        .select2-container .select2-selection--single,
+        .select2-container .select2-selection--multiple { background: #0d1117; border-color: #30363d; color: #c9d1d9; min-height: 34px; }
+        .select2-container .select2-selection--single .select2-selection__rendered { color: #c9d1d9; line-height: 34px; }
+        .select2-container .select2-selection--multiple .select2-selection__choice { background: #21262d; border-color: #30363d; color: #c9d1d9; }
+        .select2-dropdown { background: #161b22; border-color: #30363d; }
+        .select2-results__option { color: #c9d1d9; }
+        .select2-results__option--highlighted { background: #1f6feb !important; color: #fff !important; }
+        .select2-search__field { background: #0d1117 !important; color: #c9d1d9 !important; border-color: #30363d !important; }
+        .split-row { display: flex; gap: 16px; }
+        .split-row > .card { flex: 1; }
+        .event-log { max-height: 120px; overflow-y: auto; background: #0d1117; padding: 8px; border-radius: 4px; font-size: 11px; font-family: Consolas, monospace; color: #8b949e; }
+        .event-log div { padding: 1px 0; }
+        .event-log .evt-name { color: #d2a8ff; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Select2 Compat Wrapper <span class="badge">4.0.13 + Wrapper</span></h1>
+    <p>All components below use 3.3.x-style API calls running on Select2 4.0.13 via the compatibility wrapper.</p>
+</div>
+
+<div class="content">
+
+    <!-- Basic select -->
+    <div class="card">
+        <h2>Basic Select</h2>
+        <div class="desc">Standard initialization with placeholder and allowClear. Uses 3.3.x API.</div>
+        <div class="code">$el.select2({ placeholder: "Select a country...", allowClear: true });</div>
+        <select id="demo-basic">
+            <option></option>
+            <option value="tr">Turkey</option>
+            <option value="us">United States</option>
+            <option value="de">Germany</option>
+            <option value="jp">Japan</option>
+            <option value="br">Brazil</option>
+        </select>
+        <div class="actions">
+            <button onclick="$('#demo-basic').select2('open')">select2("open")</button>
+            <button onclick="$('#demo-basic').select2('close')">select2("close")</button>
+            <button onclick="demoLog('basic', 'val = ' + $('#demo-basic').val())">select2("val")</button>
+            <button onclick="$('#demo-basic').select2('disable'); demoLog('basic', 'disabled')">select2("disable")</button>
+            <button onclick="$('#demo-basic').select2('enable'); demoLog('basic', 'enabled')">select2("enable")</button>
+        </div>
+        <div class="output" id="out-basic"></div>
+    </div>
+
+    <div class="split-row">
+        <!-- Data setter -->
+        <div class="card">
+            <h2>Data Setter</h2>
+            <div class="desc">Programmatically set value using select2("data", obj) - a method removed in 4.x.</div>
+            <div class="code">$el.select2("data", { id: "jp", text: "Japan" });</div>
+            <select id="demo-data">
+                <option></option>
+                <option value="tr">Turkey</option>
+                <option value="us">United States</option>
+                <option value="de">Germany</option>
+                <option value="jp">Japan</option>
+            </select>
+            <div class="actions">
+                <button onclick="$('#demo-data').select2('data', {id:'jp', text:'Japan'}); demoLog('data', 'Set to Japan')">Set Japan</button>
+                <button onclick="$('#demo-data').select2('data', {id:'new99', text:'Dynamic Item'}); demoLog('data', 'Set dynamic')">Set Dynamic</button>
+                <button onclick="$('#demo-data').select2('data', null); demoLog('data', 'Cleared')">Clear</button>
+                <button onclick="var d=$('#demo-data').select2('data'); demoLog('data', JSON.stringify(d))">Get Data</button>
+            </div>
+            <div class="output" id="out-data"></div>
+        </div>
+
+        <!-- Container access -->
+        <div class="card">
+            <h2>Container Access</h2>
+            <div class="desc">Access the internal container via select2("container") - removed in 4.x.</div>
+            <div class="code">var $c = $el.select2("container");
+$c.css("border", "2px solid #f0883e");</div>
+            <select id="demo-container">
+                <option value="a">Option A</option>
+                <option value="b">Option B</option>
+            </select>
+            <div class="actions">
+                <button onclick="var c=$('#demo-container').select2('container'); c.css('border','2px solid #f0883e'); demoLog('container', 'Highlighted container')">Highlight</button>
+                <button onclick="var c=$('#demo-container').select2('container'); c.css('border',''); demoLog('container', 'Reset')">Reset</button>
+                <button onclick="demoLog('container', 'opened=' + $('#demo-container').select2('opened'))">select2("opened")</button>
+            </div>
+            <div class="output" id="out-container"></div>
+        </div>
+    </div>
+
+    <!-- Multiple select with maximumSelectionSize -->
+    <div class="card">
+        <h2>Multiple Select with maximumSelectionSize</h2>
+        <div class="desc">Uses the 3.3.x option name "maximumSelectionSize" (renamed to maximumSelectionLength in 4.x).</div>
+        <div class="code">$el.select2({ maximumSelectionSize: 3, placeholder: "Pick up to 3..." });</div>
+        <select id="demo-multi" multiple>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="js">JavaScript</option>
+            <option value="py">Python</option>
+            <option value="go">Go</option>
+            <option value="rs">Rust</option>
+        </select>
+        <div class="actions">
+            <button onclick="$('#demo-multi').select2('data', [{id:'js',text:'JavaScript'},{id:'py',text:'Python'}]); demoLog('multi', 'Set JS + Python')">Set JS + Python</button>
+            <button onclick="var d=$('#demo-multi').select2('data'); demoLog('multi', JSON.stringify(d))">Get Data</button>
+            <button onclick="$('#demo-multi').select2('disable'); demoLog('multi', 'disabled')">Disable</button>
+            <button onclick="$('#demo-multi').select2('enable'); demoLog('multi', 'enabled')">Enable</button>
+        </div>
+        <div class="output" id="out-multi"></div>
+    </div>
+
+    <!-- Custom formatting -->
+    <div class="card">
+        <h2>Custom Formatting (formatResult / formatSelection)</h2>
+        <div class="desc">Uses 3.3.x formatResult and formatSelection options (renamed to templateResult/templateSelection in 4.x).</div>
+        <div class="code">$el.select2({
+    formatResult: function(item) { return "&lt;b&gt;" + item.text + "&lt;/b&gt;"; },
+    formatSelection: function(item) { return "[" + item.text + "]"; }
+});</div>
+        <select id="demo-format">
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+        </select>
+        <div class="output" id="out-format"></div>
+    </div>
+
+    <!-- Custom matcher -->
+    <div class="card">
+        <h2>Custom Matcher (old signature)</h2>
+        <div class="desc">Uses 3.3.x matcher(term, text, option) signature. Try typing "an" to match "Germany" and "Japan".</div>
+        <div class="code">$el.select2({
+    matcher: function(term, text, opt) {
+        return text.toLowerCase().indexOf(term.toLowerCase()) >= 0;
+    }
+});</div>
+        <select id="demo-matcher">
+            <option value="tr">Turkey</option>
+            <option value="us">United States</option>
+            <option value="de">Germany</option>
+            <option value="jp">Japan</option>
+            <option value="fr">France</option>
+        </select>
+        <div class="output" id="out-matcher"></div>
+    </div>
+
+    <!-- formatNoMatches / formatSearching -->
+    <div class="card">
+        <h2>Language Functions (formatNoMatches, formatSearching)</h2>
+        <div class="desc">Uses 3.3.x format functions (moved to language object in 4.x). Type something that does not match to see.</div>
+        <div class="code">$el.select2({
+    formatNoMatches: function() { return "No results found."; },
+    formatSearching: function() { return "Searching..."; }
+});</div>
+        <select id="demo-lang">
+            <option value="a">Alpha</option>
+            <option value="b">Beta</option>
+            <option value="c">Gamma</option>
+        </select>
+    </div>
+
+    <!-- AJAX with 3.3.x config -->
+    <div class="card">
+        <h2>AJAX (3.3.x config shape)</h2>
+        <div class="desc">Uses quietMillis, data(term, page), and results(data, page) - all renamed/restructured in 4.x. Searches GitHub repositories.</div>
+        <div class="code">$el.select2({
+    ajax: {
+        url: "https://api.github.com/search/repositories",
+        quietMillis: 400,
+        data: function(term, page) { return { q: term }; },
+        results: function(data, page) {
+            return { results: data.items.map(...), more: false };
+        }
+    }
+});</div>
+        <select id="demo-ajax"><option></option></select>
+        <div class="actions">
+            <button onclick="var d=$('#demo-ajax').select2('data'); demoLog('ajax', JSON.stringify(d))">Get Data</button>
+        </div>
+        <div class="output" id="out-ajax"></div>
+    </div>
+
+    <!-- Event bridge -->
+    <div class="card">
+        <h2>Event Bridge</h2>
+        <div class="desc">Listens for 3.3.x-style events (select2-open, select2-close, select2-selecting, etc.) which are bridged from 4.x events.</div>
+        <div class="code">$el.on("select2-open", function() { ... });
+$el.on("select2-close", function() { ... });
+$el.on("select2-selecting", function(e) { log(e.choice); });</div>
+        <select id="demo-events">
+            <option value="a">Alpha</option>
+            <option value="b">Beta</option>
+            <option value="c">Gamma</option>
+        </select>
+        <div class="event-log" id="event-log"></div>
+    </div>
+
+    <!-- Destroy / Reinit -->
+    <div class="card">
+        <h2>Destroy and Reinitialize</h2>
+        <div class="desc">Destroy the instance and recreate it.</div>
+        <select id="demo-destroy">
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+        <div class="actions">
+            <button onclick="$('#demo-destroy').select2('destroy'); demoLog('destroy', 'Destroyed')">select2("destroy")</button>
+            <button onclick="$('#demo-destroy').select2({ placeholder: 'Reinitialized' }); demoLog('destroy', 'Reinitialized')">select2({ ... })</button>
+        </div>
+        <div class="output" id="out-destroy"></div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="lib/v4/select2.full.js"></script>
+<script src="lib/v4/select2-compat-wrapper.js"></script>
+<script>
+function demoLog(id, msg) {
+    $("#out-" + id).text(msg);
+}
+
+$(function () {
+    // Basic
+    $("#demo-basic").select2({ placeholder: "Select a country...", allowClear: true });
+
+    // Data setter
+    $("#demo-data").select2({ placeholder: "Use buttons to set data..." });
+
+    // Container
+    $("#demo-container").select2();
+
+    // Multi
+    $("#demo-multi").select2({ maximumSelectionSize: 3, placeholder: "Pick up to 3..." });
+
+    // Format
+    $("#demo-format").select2({
+        formatResult: function (item, container, query, escapeMarkup) {
+            var colors = { critical: "#f85149", high: "#f0883e", medium: "#d29922", low: "#3fb950" };
+            var c = colors[item.id] || "#8b949e";
+            return '<span style="color:' + c + '; font-weight:600;">' + item.text + '</span>';
+        },
+        formatSelection: function (item) {
+            return "[" + item.text + "]";
+        }
+    });
+
+    // Matcher
+    $("#demo-matcher").select2({
+        matcher: function (term, text, option) {
+            return text.toLowerCase().indexOf(term.toLowerCase()) >= 0;
+        }
+    });
+
+    // Language
+    $("#demo-lang").select2({
+        formatNoMatches: function () { return "No results found."; },
+        formatSearching: function () { return "Searching..."; }
+    });
+
+    // AJAX
+    $("#demo-ajax").select2({
+        placeholder: "Search GitHub repos...",
+        minimumInputLength: 2,
+        ajax: {
+            url: "https://api.github.com/search/repositories",
+            dataType: "json",
+            quietMillis: 400,
+            data: function (term, page) {
+                return { q: term, per_page: 10 };
+            },
+            results: function (data, page) {
+                var items = $.map(data.items || [], function (repo) {
+                    return { id: repo.id, text: repo.full_name };
+                });
+                return { results: items, more: false };
+            }
+        }
+    });
+
+    // Events
+    $("#demo-events").select2();
+    var $log = $("#event-log");
+    var events = ["select2-open", "select2-opening", "select2-close", "select2-closing",
+                  "select2-selecting", "select2-selected", "select2-removing", "select2-removed"];
+    $.each(events, function (i, evtName) {
+        $("#demo-events").on(evtName, function (e) {
+            var detail = "";
+            if (e.choice) detail = " (id=" + e.choice.id + ", text=" + e.choice.text + ")";
+            if (e.val) detail += " val=" + e.val;
+            $log.prepend('<div><span class="evt-name">' + evtName + '</span>' + detail + '</div>');
+        });
+    });
+
+    // Destroy
+    $("#demo-destroy").select2();
+});
+</script>
+</body>
+</html>

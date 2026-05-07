@@ -1,0 +1,335 @@
+/*
+ * select2-legacy-theme.css
+ *
+ * Theme for Select2 4.0.13 that reproduces the look of a legacy Select2 3.x
+ * stylesheet (flat choice with a custom arrow PNG and a project-specific
+ * font stack). Keep the asset basenames and the font-family as placeholders
+ * and adjust them to match your own image set before deploying.
+ *
+ * Load after the stock select2 4.x stylesheet:
+ *   1. select2.min.css
+ *   2. this file
+ *
+ * Asset paths (adjust to your own img directory):
+ *   ../img/select2.png
+ *   ../img/spinner.gif
+ *   ../img/ico-custom-select-down.png
+ *   ../img/ico-custom-select-up.png
+ *   ../img/bg-custom-select-bigger-hover.png
+ *   ../img/bg-custom-select-bigger-hover-down.png
+ *
+ * 3.x class name -> 4.0.13 class name mapping:
+ *   .select2-container .select2-choice        ->  .select2-container--default .select2-selection--single
+ *   .select2-container .select2-choice > span ->  .select2-selection__rendered
+ *   .select2-container .select2-choice div b  ->  .select2-selection__arrow b
+ *   .select2-dropdown-open .select2-choice    ->  .select2-container--open .select2-selection--single
+ *   .select2-drop                              ->  .select2-dropdown
+ *   .select2-search input                      ->  .select2-search__field
+ *   .select2-results                           ->  .select2-results__options
+ *   .select2-more-results                      ->  .select2-results__option.loading-results
+ *   .select2-search-choice-close               ->  .select2-selection__choice__remove
+ *   .select2-container-multi .select2-choices  ->  .select2-selection--multiple
+ */
+
+/* ---- C02, C03: flat choice (no gradient, no overflow hidden) ---- */
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    background-image: none;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    border: 1px solid #aaa;
+    height: 26px;
+    line-height: 26px;
+    padding: 0 0 0 8px;
+    color: #444;
+    overflow: visible;
+    white-space: nowrap;
+    position: relative;
+}
+
+/* ---- C04: rendered text typography ---- */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    font-size: 11px;
+    font-family: "LegacyBold", sans-serif; /* replace with your own font */
+    margin-right: 26px;
+    padding: 0;
+    line-height: inherit;
+    color: inherit;
+    display: block;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+/* ---- C06: custom down arrow ---- */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    background: transparent;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 18px;
+    height: 100%;
+    border: none;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    background: url("../img/ico-custom-select-down.png") no-repeat 6px 9px;
+    border: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: static;
+    top: auto;
+    left: auto;
+}
+
+/* ---- C08, C09: open-state flat + up arrow ----
+ * 3.2 kept all four borders on open and only set
+ * border-bottom-color: transparent so the choice merged into the
+ * dropdown. We do the same here. The earlier `border-left: none`
+ * version dropped the left edge and visually broke the corners.
+ */
+.select2-container--default.select2-container--open .select2-selection--single {
+    background-color: #fff;
+    background-image: none;
+    -webkit-box-shadow: 0 1px 0 #fff inset;
+    -moz-box-shadow: 0 1px 0 #fff inset;
+    box-shadow: 0 1px 0 #fff inset;
+    -webkit-border-bottom-left-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+    -moz-border-radius-bottomleft: 0;
+    -moz-border-radius-bottomright: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid #aaa;
+    border-bottom-color: transparent;
+}
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+    background: url("../img/ico-custom-select-up.png") no-repeat 6px 9px;
+}
+
+/* ---- C05: dropdown z-index ---- */
+.select2-container--open .select2-dropdown {
+    z-index: 999999;
+}
+
+/* ---- C01: clear-X (abbr) uses select2.png ---- */
+.select2-selection__clear,
+.select2-container--default .select2-selection--single .select2-selection__clear {
+    background: url("../img/select2.png") right top no-repeat;
+    width: 12px;
+    height: 12px;
+    font-size: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    border: 0;
+    outline: 0;
+    float: right;
+    margin-top: 5px;
+    margin-right: 24px;
+    color: transparent;
+}
+
+/* ---- C01: search input sprite + spinner ---- */
+.select2-dropdown .select2-search--dropdown .select2-search__field,
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    background: #fff url("../img/select2.png") no-repeat 100% -22px;
+    padding: 4px 20px 4px 5px;
+    outline: 0;
+    border: 1px solid #aaa;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.select2-container--default .select2-search--dropdown .select2-search__field.select2-active {
+    background: #fff url("../img/spinner.gif") no-repeat 100%;
+}
+
+/* ---- results list ---- */
+.select2-results__options {
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0;
+    margin: 4px 4px 4px 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* ---- C10: iOS tap highlight off ---- */
+.select2-results__options *,
+.select2-results__option * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/* ---- C01: more-results loading state ---- */
+.select2-results__option.loading-results,
+.select2-results__message {
+    background: #f4f4f4 url("../img/spinner.gif") no-repeat 100%;
+    display: list-item;
+    padding-left: 5px;
+}
+
+/* ---- multi-select: search field active spinner ---- */
+.select2-container--default.select2-container--focus
+.select2-selection--multiple
+.select2-search__field.select2-active {
+    background: #fff url("../img/spinner.gif") no-repeat 100% !important;
+}
+
+.select2-selection__choice__remove {
+    background: url("../img/select2.png") right top no-repeat;
+    width: 12px;
+    height: 13px;
+    font-size: 1px;
+    outline: none;
+    display: inline-block;
+    border: 0;
+    color: transparent;
+}
+
+/* ---- C11: high-DPI arrow overrides ---- */
+@media
+only screen and (-webkit-min-device-pixel-ratio: 1.5),
+only screen and (min-resolution: 2dppx) {
+
+    .select2-container--default.select2-container--open
+    .select2-selection--single
+    .select2-selection__arrow b {
+        background-image: url(../img/ico-custom-select-up.png) !important;
+        background-repeat: no-repeat !important;
+    }
+
+    .select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow b {
+        background-image: url(../img/ico-custom-select-down.png) !important;
+        background-repeat: no-repeat !important;
+    }
+
+    .select2-container--default.custom-select-big .select2-selection--single .select2-selection__arrow b {
+        background: url(../img/bg-custom-select-bigger-hover.png) no-repeat center !important;
+    }
+
+    .select2-container--default.custom-select-big.select2-container--open .select2-selection--single .select2-selection__arrow b {
+        background: url(../img/bg-custom-select-bigger-hover-down.png) no-repeat center !important;
+    }
+
+    .select2-search__field {
+        background-position: 100% -21px !important;
+    }
+}
+
+/* Default arrow <div> geometry. The adapter wraps 4.x's <b> in a <div>
+ * so legacy ".select2-choice div b" selectors resolve. Without a size
+ * the wrapper collapses to 0x0 and the <b> (sized 100%/100%) disappears.
+ * Also restores the 3.2 stock background gradient and the 1px left
+ * separator that lived on `.select2-container .select2-choice div`.
+ * The .custom-select-big block below raises specificity and switches
+ * to absolute positioning, dropping these visuals.
+ */
+.select2-container--default .select2-selection--single .select2-selection__arrow > div {
+    display: block;
+    width: 100%;
+    height: 100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: #ccc;
+    background-image: -webkit-linear-gradient(center bottom, #ccc 0, #eee 60%);
+    background-image: -moz-linear-gradient(center bottom, #ccc 0, #eee 60%);
+    background-image: -o-linear-gradient(bottom, #ccc 0, #eee 60%);
+    background-image: -ms-linear-gradient(top, #ccc 0, #eee 60%);
+    background-image: linear-gradient(to top, #ccc 0, #eee 60%);
+    -webkit-border-radius: 0 4px 4px 0;
+    -moz-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    border-left: 1px solid #aaa;
+}
+
+/* Open state drops the gradient and separator (matches 3.2's
+ * `.select2-dropdown-open .select2-choice div { background: transparent;
+ * border-left: none; }`).
+ */
+.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow > div {
+    background: transparent;
+    background-image: none;
+    border-left: none;
+    filter: none;
+}
+
+/* ---- Custom class hook passthrough ----
+ * Patched 3.2 rendered the arrow as <div><b></b></div> inside
+ * .select2-choice. 4.x adds an outer <span class="select2-selection__arrow">
+ * constrained to width:18px, which traps project CSS targeting the
+ * inner <div> for sizing. Strip the wrapper geometry so the inner div
+ * inherits positioning from project rules.
+ */
+.select2-container--default.custom-select-big .select2-selection--single .select2-selection__arrow,
+.select2-container--default.custom-select-big-two .select2-selection--single .select2-selection__arrow {
+    position: static;
+    width: auto;
+    height: auto;
+    border: 0;
+    background: transparent;
+    top: auto;
+    right: auto;
+}
+
+/* Re-apply 3.2's ".select2-container .select2-choice div" positioning
+ * (absolute top-right of the choice). 4.x dropped both the inner div
+ * and its positioning rule; the adapter re-adds the div, this rule
+ * re-adds the positioning. Project CSS like
+ * ".custom-select-big .select2-choice div { width:40px; height:40px; }"
+ * then anchors to the choice's right edge as before.
+ */
+.select2-container--default.custom-select-big .select2-selection--single .select2-selection__arrow > div,
+.select2-container--default.custom-select-big-two .select2-selection--single .select2-selection__arrow > div {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: block;
+}
+
+/* Neutralize the default 26px single-selection line-height / padding for
+ * custom class hooks so project CSS that uses absolute-positioned inner
+ * spans (.text, .branch, .accountnumber, ...) can lay out freely.
+ */
+.select2-container--default.custom-select-big .select2-selection--single .select2-selection__rendered,
+.select2-container--default.custom-select-big-two .select2-selection--single .select2-selection__rendered {
+    line-height: inherit;
+    padding: 0;
+    margin: 0;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+/* Re-apply 3.2's ".select2-container .select2-choice span" base
+ * typography (margin-right, display, overflow, white-space,
+ * text-overflow, font). 3.2 applied this to every span descendant of
+ * .select2-choice; projects depend on it for ellipsis clipping and the
+ * legacy font on inner spans like .rest, .branch, .accountnumber, ...
+ * 4.x only styles the rendered container, not its children, so those
+ * inner spans lose their baseline. Project !important rules still
+ * override position/width/color/font-size; this fills the gaps.
+ */
+.select2-container--default .select2-selection--single .select2-selection__rendered span {
+    margin-right: 26px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    font-size: 11px;
+    font-family: "LegacyBold", sans-serif;
+}
